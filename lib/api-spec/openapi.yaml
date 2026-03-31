@@ -1,15 +1,20 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Sistem Informasi Kepegawaian dan Status Kehadiran API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: employees
+    description: Employee management
+  - name: attendance
+    description: Attendance and leave management
+  - name: documents
+    description: Document management
 paths:
   /healthz:
     get:
@@ -24,6 +29,282 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /employees:
+    get:
+      operationId: getEmployees
+      tags: [employees]
+      summary: Get all employees
+      responses:
+        "200":
+          description: List of employees
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Employee"
+    post:
+      operationId: createEmployee
+      tags: [employees]
+      summary: Create new employee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEmployee"
+      responses:
+        "201":
+          description: Employee created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Employee"
+
+  /employees/{id}:
+    get:
+      operationId: getEmployee
+      tags: [employees]
+      summary: Get employee by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Employee detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Employee"
+    put:
+      operationId: updateEmployee
+      tags: [employees]
+      summary: Update employee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEmployee"
+      responses:
+        "200":
+          description: Employee updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Employee"
+    delete:
+      operationId: deleteEmployee
+      tags: [employees]
+      summary: Delete employee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Employee deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /attendance:
+    get:
+      operationId: getAttendanceRecords
+      tags: [attendance]
+      summary: Get attendance records
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [izin, tidak_hadir, cuti, dinas]
+        - name: date
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of attendance records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AttendanceRecord"
+    post:
+      operationId: createAttendanceRecord
+      tags: [attendance]
+      summary: Create attendance record (izin/absensi)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAttendanceRecord"
+      responses:
+        "201":
+          description: Attendance record created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttendanceRecord"
+
+  /attendance/summary:
+    get:
+      operationId: getAttendanceSummary
+      tags: [attendance]
+      summary: Get attendance summary counts by status
+      responses:
+        "200":
+          description: Summary counts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttendanceSummary"
+
+  /attendance/{id}:
+    put:
+      operationId: updateAttendanceRecord
+      tags: [attendance]
+      summary: Update attendance record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAttendanceRecord"
+      responses:
+        "200":
+          description: Attendance record updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttendanceRecord"
+    delete:
+      operationId: deleteAttendanceRecord
+      tags: [attendance]
+      summary: Delete attendance record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Record deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /documents:
+    get:
+      operationId: getDocuments
+      tags: [documents]
+      summary: Get all documents
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [SP3S, SIJ, CUTI, DINAS, SKMJ, SURAT_TUGAS]
+      responses:
+        "200":
+          description: List of documents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Document"
+    post:
+      operationId: createDocument
+      tags: [documents]
+      summary: Create new document
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDocument"
+      responses:
+        "201":
+          description: Document created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Document"
+
+  /documents/{id}:
+    get:
+      operationId: getDocument
+      tags: [documents]
+      summary: Get document by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Document detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Document"
+    delete:
+      operationId: deleteDocument
+      tags: [documents]
+      summary: Delete document
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Document deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /documents/summary:
+    get:
+      operationId: getDocumentSummary
+      tags: [documents]
+      summary: Get document counts by type
+      responses:
+        "200":
+          description: Summary of documents per type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentSummary"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +315,210 @@ components:
       required:
         - status
 
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+    Employee:
+      type: object
+      properties:
+        id:
+          type: integer
+        nama:
+          type: string
+        nopek:
+          type: string
+        foto:
+          type: string
+          nullable: true
+        jabatan:
+          type: string
+          nullable: true
+        departemen:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - nama
+        - nopek
+        - createdAt
+
+    CreateEmployee:
+      type: object
+      properties:
+        nama:
+          type: string
+        nopek:
+          type: string
+        foto:
+          type: string
+          nullable: true
+        jabatan:
+          type: string
+          nullable: true
+        departemen:
+          type: string
+          nullable: true
+      required:
+        - nama
+        - nopek
+
+    AttendanceRecord:
+      type: object
+      properties:
+        id:
+          type: integer
+        employeeId:
+          type: integer
+        employee:
+          $ref: "#/components/schemas/Employee"
+        status:
+          type: string
+          enum: [izin, tidak_hadir, cuti, dinas]
+        tanggal:
+          type: string
+        alasan:
+          type: string
+          nullable: true
+        keterangan:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - employeeId
+        - status
+        - tanggal
+        - createdAt
+
+    CreateAttendanceRecord:
+      type: object
+      properties:
+        employeeId:
+          type: integer
+        status:
+          type: string
+          enum: [izin, tidak_hadir, cuti, dinas]
+        tanggal:
+          type: string
+        alasan:
+          type: string
+          nullable: true
+        keterangan:
+          type: string
+          nullable: true
+      required:
+        - employeeId
+        - status
+        - tanggal
+
+    AttendanceSummary:
+      type: object
+      properties:
+        izin:
+          type: integer
+        tidak_hadir:
+          type: integer
+        cuti:
+          type: integer
+        dinas:
+          type: integer
+      required:
+        - izin
+        - tidak_hadir
+        - cuti
+        - dinas
+
+    Document:
+      type: object
+      properties:
+        id:
+          type: integer
+        employeeId:
+          type: integer
+        employee:
+          $ref: "#/components/schemas/Employee"
+        type:
+          type: string
+          enum: [SP3S, SIJ, CUTI, DINAS, SKMJ, SURAT_TUGAS]
+        nomorSurat:
+          type: string
+          nullable: true
+        perihal:
+          type: string
+          nullable: true
+        tanggal:
+          type: string
+        status:
+          type: string
+          enum: [pending, approved, rejected]
+        keterangan:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - employeeId
+        - type
+        - tanggal
+        - status
+        - createdAt
+
+    CreateDocument:
+      type: object
+      properties:
+        employeeId:
+          type: integer
+        type:
+          type: string
+          enum: [SP3S, SIJ, CUTI, DINAS, SKMJ, SURAT_TUGAS]
+        nomorSurat:
+          type: string
+          nullable: true
+        perihal:
+          type: string
+          nullable: true
+        tanggal:
+          type: string
+        status:
+          type: string
+          enum: [pending, approved, rejected]
+        keterangan:
+          type: string
+          nullable: true
+      required:
+        - employeeId
+        - type
+        - tanggal
+        - status
+
+    DocumentSummary:
+      type: object
+      properties:
+        SP3S:
+          type: integer
+        SIJ:
+          type: integer
+        CUTI:
+          type: integer
+        DINAS:
+          type: integer
+        SKMJ:
+          type: integer
+        SURAT_TUGAS:
+          type: integer
+      required:
+        - SP3S
+        - SIJ
+        - CUTI
+        - DINAS
+        - SKMJ
+        - SURAT_TUGAS
