@@ -150,6 +150,162 @@ export interface DocumentSummary {
   SURAT_TUGAS: number;
 }
 
+export interface InventoryItem {
+  id: number;
+  kodeBarang: string;
+  namaBarang: string;
+  kategori?: string | null;
+  satuan?: string | null;
+  stok: number;
+  keterangan?: string | null;
+  createdAt: string;
+}
+
+export interface CreateInventoryItem {
+  kodeBarang: string;
+  namaBarang: string;
+  kategori?: string | null;
+  satuan?: string | null;
+  stok: number;
+  keterangan?: string | null;
+}
+
+export type InventoryTransactionTipe =
+  (typeof InventoryTransactionTipe)[keyof typeof InventoryTransactionTipe];
+
+export const InventoryTransactionTipe = {
+  masuk: "masuk",
+  keluar: "keluar",
+} as const;
+
+export interface InventoryTransaction {
+  id: number;
+  itemId: number;
+  item?: InventoryItem;
+  tipe: InventoryTransactionTipe;
+  jumlah: number;
+  tanggal: string;
+  keterangan?: string | null;
+  penanggungJawab?: string | null;
+  createdAt: string;
+}
+
+export type CreateInventoryTransactionTipe =
+  (typeof CreateInventoryTransactionTipe)[keyof typeof CreateInventoryTransactionTipe];
+
+export const CreateInventoryTransactionTipe = {
+  masuk: "masuk",
+  keluar: "keluar",
+} as const;
+
+export interface CreateInventoryTransaction {
+  itemId: number;
+  tipe: CreateInventoryTransactionTipe;
+  jumlah: number;
+  tanggal: string;
+  keterangan?: string | null;
+  penanggungJawab?: string | null;
+}
+
+export interface InventorySummary {
+  totalItems: number;
+  totalMasuk: number;
+  totalKeluar: number;
+}
+
+export type ComplaintKategori =
+  (typeof ComplaintKategori)[keyof typeof ComplaintKategori];
+
+export const ComplaintKategori = {
+  produk: "produk",
+  layanan: "layanan",
+  pengiriman: "pengiriman",
+  lainnya: "lainnya",
+} as const;
+
+export type ComplaintStatus =
+  (typeof ComplaintStatus)[keyof typeof ComplaintStatus];
+
+export const ComplaintStatus = {
+  baru: "baru",
+  diproses: "diproses",
+  selesai: "selesai",
+  ditolak: "ditolak",
+} as const;
+
+export type ComplaintPrioritas =
+  (typeof ComplaintPrioritas)[keyof typeof ComplaintPrioritas];
+
+export const ComplaintPrioritas = {
+  rendah: "rendah",
+  sedang: "sedang",
+  tinggi: "tinggi",
+} as const;
+
+export interface Complaint {
+  id: number;
+  namaPelanggan: string;
+  kontakPelanggan?: string | null;
+  kategori: ComplaintKategori;
+  judul: string;
+  deskripsi: string;
+  status: ComplaintStatus;
+  prioritas: ComplaintPrioritas;
+  tanggal: string;
+  penangananOleh?: string | null;
+  catatanPenanganan?: string | null;
+  createdAt: string;
+}
+
+export type CreateComplaintKategori =
+  (typeof CreateComplaintKategori)[keyof typeof CreateComplaintKategori];
+
+export const CreateComplaintKategori = {
+  produk: "produk",
+  layanan: "layanan",
+  pengiriman: "pengiriman",
+  lainnya: "lainnya",
+} as const;
+
+export type CreateComplaintStatus =
+  (typeof CreateComplaintStatus)[keyof typeof CreateComplaintStatus];
+
+export const CreateComplaintStatus = {
+  baru: "baru",
+  diproses: "diproses",
+  selesai: "selesai",
+  ditolak: "ditolak",
+} as const;
+
+export type CreateComplaintPrioritas =
+  (typeof CreateComplaintPrioritas)[keyof typeof CreateComplaintPrioritas];
+
+export const CreateComplaintPrioritas = {
+  rendah: "rendah",
+  sedang: "sedang",
+  tinggi: "tinggi",
+} as const;
+
+export interface CreateComplaint {
+  namaPelanggan: string;
+  kontakPelanggan?: string | null;
+  kategori: CreateComplaintKategori;
+  judul: string;
+  deskripsi: string;
+  status: CreateComplaintStatus;
+  prioritas: CreateComplaintPrioritas;
+  tanggal: string;
+  penangananOleh?: string | null;
+  catatanPenanganan?: string | null;
+}
+
+export interface ComplaintSummary {
+  baru: number;
+  diproses: number;
+  selesai: number;
+  ditolak: number;
+}
+
 export type GetAttendanceRecordsParams = {
   status?: GetAttendanceRecordsStatus;
   date?: string;
@@ -179,4 +335,52 @@ export const GetDocumentsType = {
   DINAS: "DINAS",
   SKMJ: "SKMJ",
   SURAT_TUGAS: "SURAT_TUGAS",
+} as const;
+
+export type GetInventoryTransactionsParams = {
+  tipe?: GetInventoryTransactionsTipe;
+  itemId?: number;
+};
+
+export type GetInventoryTransactionsTipe =
+  (typeof GetInventoryTransactionsTipe)[keyof typeof GetInventoryTransactionsTipe];
+
+export const GetInventoryTransactionsTipe = {
+  masuk: "masuk",
+  keluar: "keluar",
+} as const;
+
+export type GetComplaintsParams = {
+  status?: GetComplaintsStatus;
+  prioritas?: GetComplaintsPrioritas;
+  kategori?: GetComplaintsKategori;
+};
+
+export type GetComplaintsStatus =
+  (typeof GetComplaintsStatus)[keyof typeof GetComplaintsStatus];
+
+export const GetComplaintsStatus = {
+  baru: "baru",
+  diproses: "diproses",
+  selesai: "selesai",
+  ditolak: "ditolak",
+} as const;
+
+export type GetComplaintsPrioritas =
+  (typeof GetComplaintsPrioritas)[keyof typeof GetComplaintsPrioritas];
+
+export const GetComplaintsPrioritas = {
+  rendah: "rendah",
+  sedang: "sedang",
+  tinggi: "tinggi",
+} as const;
+
+export type GetComplaintsKategori =
+  (typeof GetComplaintsKategori)[keyof typeof GetComplaintsKategori];
+
+export const GetComplaintsKategori = {
+  produk: "produk",
+  layanan: "layanan",
+  pengiriman: "pengiriman",
+  lainnya: "lainnya",
 } as const;

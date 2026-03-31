@@ -10,6 +10,8 @@ import KaryawanDetail from "@/pages/karyawan-detail";
 import Absensi from "@/pages/absensi";
 import Dokumen from "@/pages/dokumen";
 import DokumenList from "@/pages/dokumen-list";
+import Inventori from "@/pages/inventori";
+import Keluhan from "@/pages/keluhan";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,6 +32,8 @@ function Router() {
         <Route path="/absensi" component={Absensi} />
         <Route path="/dokumen" component={Dokumen} />
         <Route path="/dokumen/:type" component={DokumenList} />
+        <Route path="/inventori" component={Inventori} />
+        <Route path="/keluhan" component={Keluhan} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

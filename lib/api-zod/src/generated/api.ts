@@ -291,3 +291,255 @@ export const GetDocumentSummaryResponse = zod.object({
   SKMJ: zod.number(),
   SURAT_TUGAS: zod.number(),
 });
+
+/**
+ * @summary Get all inventory items
+ */
+export const GetInventoryItemsResponseItem = zod.object({
+  id: zod.number(),
+  kodeBarang: zod.string(),
+  namaBarang: zod.string(),
+  kategori: zod.string().nullish(),
+  satuan: zod.string().nullish(),
+  stok: zod.number(),
+  keterangan: zod.string().nullish(),
+  createdAt: zod.string(),
+});
+export const GetInventoryItemsResponse = zod.array(
+  GetInventoryItemsResponseItem,
+);
+
+/**
+ * @summary Create new inventory item
+ */
+export const CreateInventoryItemBody = zod.object({
+  kodeBarang: zod.string(),
+  namaBarang: zod.string(),
+  kategori: zod.string().nullish(),
+  satuan: zod.string().nullish(),
+  stok: zod.number(),
+  keterangan: zod.string().nullish(),
+});
+
+/**
+ * @summary Update inventory item
+ */
+export const UpdateInventoryItemParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateInventoryItemBody = zod.object({
+  kodeBarang: zod.string(),
+  namaBarang: zod.string(),
+  kategori: zod.string().nullish(),
+  satuan: zod.string().nullish(),
+  stok: zod.number(),
+  keterangan: zod.string().nullish(),
+});
+
+export const UpdateInventoryItemResponse = zod.object({
+  id: zod.number(),
+  kodeBarang: zod.string(),
+  namaBarang: zod.string(),
+  kategori: zod.string().nullish(),
+  satuan: zod.string().nullish(),
+  stok: zod.number(),
+  keterangan: zod.string().nullish(),
+  createdAt: zod.string(),
+});
+
+/**
+ * @summary Delete inventory item
+ */
+export const DeleteInventoryItemParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const DeleteInventoryItemResponse = zod.object({
+  message: zod.string(),
+});
+
+/**
+ * @summary Get inventory transactions
+ */
+export const GetInventoryTransactionsQueryParams = zod.object({
+  tipe: zod.enum(["masuk", "keluar"]).optional(),
+  itemId: zod.coerce.number().optional(),
+});
+
+export const GetInventoryTransactionsResponseItem = zod.object({
+  id: zod.number(),
+  itemId: zod.number(),
+  item: zod
+    .object({
+      id: zod.number(),
+      kodeBarang: zod.string(),
+      namaBarang: zod.string(),
+      kategori: zod.string().nullish(),
+      satuan: zod.string().nullish(),
+      stok: zod.number(),
+      keterangan: zod.string().nullish(),
+      createdAt: zod.string(),
+    })
+    .optional(),
+  tipe: zod.enum(["masuk", "keluar"]),
+  jumlah: zod.number(),
+  tanggal: zod.string(),
+  keterangan: zod.string().nullish(),
+  penanggungJawab: zod.string().nullish(),
+  createdAt: zod.string(),
+});
+export const GetInventoryTransactionsResponse = zod.array(
+  GetInventoryTransactionsResponseItem,
+);
+
+/**
+ * @summary Create inventory transaction (barang masuk/keluar)
+ */
+export const CreateInventoryTransactionBody = zod.object({
+  itemId: zod.number(),
+  tipe: zod.enum(["masuk", "keluar"]),
+  jumlah: zod.number(),
+  tanggal: zod.string(),
+  keterangan: zod.string().nullish(),
+  penanggungJawab: zod.string().nullish(),
+});
+
+/**
+ * @summary Delete inventory transaction
+ */
+export const DeleteInventoryTransactionParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const DeleteInventoryTransactionResponse = zod.object({
+  message: zod.string(),
+});
+
+/**
+ * @summary Get inventory summary
+ */
+export const GetInventorySummaryResponse = zod.object({
+  totalItems: zod.number(),
+  totalMasuk: zod.number(),
+  totalKeluar: zod.number(),
+});
+
+/**
+ * @summary Get all complaints
+ */
+export const GetComplaintsQueryParams = zod.object({
+  status: zod.enum(["baru", "diproses", "selesai", "ditolak"]).optional(),
+  prioritas: zod.enum(["rendah", "sedang", "tinggi"]).optional(),
+  kategori: zod.enum(["produk", "layanan", "pengiriman", "lainnya"]).optional(),
+});
+
+export const GetComplaintsResponseItem = zod.object({
+  id: zod.number(),
+  namaPelanggan: zod.string(),
+  kontakPelanggan: zod.string().nullish(),
+  kategori: zod.enum(["produk", "layanan", "pengiriman", "lainnya"]),
+  judul: zod.string(),
+  deskripsi: zod.string(),
+  status: zod.enum(["baru", "diproses", "selesai", "ditolak"]),
+  prioritas: zod.enum(["rendah", "sedang", "tinggi"]),
+  tanggal: zod.string(),
+  penangananOleh: zod.string().nullish(),
+  catatanPenanganan: zod.string().nullish(),
+  createdAt: zod.string(),
+});
+export const GetComplaintsResponse = zod.array(GetComplaintsResponseItem);
+
+/**
+ * @summary Create new complaint
+ */
+export const CreateComplaintBody = zod.object({
+  namaPelanggan: zod.string(),
+  kontakPelanggan: zod.string().nullish(),
+  kategori: zod.enum(["produk", "layanan", "pengiriman", "lainnya"]),
+  judul: zod.string(),
+  deskripsi: zod.string(),
+  status: zod.enum(["baru", "diproses", "selesai", "ditolak"]),
+  prioritas: zod.enum(["rendah", "sedang", "tinggi"]),
+  tanggal: zod.string(),
+  penangananOleh: zod.string().nullish(),
+  catatanPenanganan: zod.string().nullish(),
+});
+
+/**
+ * @summary Get complaint by ID
+ */
+export const GetComplaintParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetComplaintResponse = zod.object({
+  id: zod.number(),
+  namaPelanggan: zod.string(),
+  kontakPelanggan: zod.string().nullish(),
+  kategori: zod.enum(["produk", "layanan", "pengiriman", "lainnya"]),
+  judul: zod.string(),
+  deskripsi: zod.string(),
+  status: zod.enum(["baru", "diproses", "selesai", "ditolak"]),
+  prioritas: zod.enum(["rendah", "sedang", "tinggi"]),
+  tanggal: zod.string(),
+  penangananOleh: zod.string().nullish(),
+  catatanPenanganan: zod.string().nullish(),
+  createdAt: zod.string(),
+});
+
+/**
+ * @summary Update complaint
+ */
+export const UpdateComplaintParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateComplaintBody = zod.object({
+  namaPelanggan: zod.string(),
+  kontakPelanggan: zod.string().nullish(),
+  kategori: zod.enum(["produk", "layanan", "pengiriman", "lainnya"]),
+  judul: zod.string(),
+  deskripsi: zod.string(),
+  status: zod.enum(["baru", "diproses", "selesai", "ditolak"]),
+  prioritas: zod.enum(["rendah", "sedang", "tinggi"]),
+  tanggal: zod.string(),
+  penangananOleh: zod.string().nullish(),
+  catatanPenanganan: zod.string().nullish(),
+});
+
+export const UpdateComplaintResponse = zod.object({
+  id: zod.number(),
+  namaPelanggan: zod.string(),
+  kontakPelanggan: zod.string().nullish(),
+  kategori: zod.enum(["produk", "layanan", "pengiriman", "lainnya"]),
+  judul: zod.string(),
+  deskripsi: zod.string(),
+  status: zod.enum(["baru", "diproses", "selesai", "ditolak"]),
+  prioritas: zod.enum(["rendah", "sedang", "tinggi"]),
+  tanggal: zod.string(),
+  penangananOleh: zod.string().nullish(),
+  catatanPenanganan: zod.string().nullish(),
+  createdAt: zod.string(),
+});
+
+/**
+ * @summary Delete complaint
+ */
+export const DeleteComplaintParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const DeleteComplaintResponse = zod.object({
+  message: zod.string(),
+});
+
+/**
+ * @summary Get complaint counts by status
+ */
+export const GetComplaintSummaryResponse = zod.object({
+  baru: zod.number(),
+  diproses: zod.number(),
+  selesai: zod.number(),
+  ditolak: zod.number(),
+});

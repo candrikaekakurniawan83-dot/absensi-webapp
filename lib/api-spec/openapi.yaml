@@ -15,6 +15,10 @@ tags:
     description: Attendance and leave management
   - name: documents
     description: Document management
+  - name: inventory
+    description: Inventory in/out management
+  - name: complaints
+    description: Customer complaints management
 paths:
   /healthz:
     get:
@@ -305,6 +309,274 @@ paths:
               schema:
                 $ref: "#/components/schemas/DocumentSummary"
 
+  /inventory/items:
+    get:
+      operationId: getInventoryItems
+      tags: [inventory]
+      summary: Get all inventory items
+      responses:
+        "200":
+          description: List of inventory items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InventoryItem"
+    post:
+      operationId: createInventoryItem
+      tags: [inventory]
+      summary: Create new inventory item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInventoryItem"
+      responses:
+        "201":
+          description: Item created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InventoryItem"
+
+  /inventory/items/{id}:
+    put:
+      operationId: updateInventoryItem
+      tags: [inventory]
+      summary: Update inventory item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInventoryItem"
+      responses:
+        "200":
+          description: Item updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InventoryItem"
+    delete:
+      operationId: deleteInventoryItem
+      tags: [inventory]
+      summary: Delete inventory item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Item deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /inventory/transactions:
+    get:
+      operationId: getInventoryTransactions
+      tags: [inventory]
+      summary: Get inventory transactions
+      parameters:
+        - name: tipe
+          in: query
+          schema:
+            type: string
+            enum: [masuk, keluar]
+        - name: itemId
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InventoryTransaction"
+    post:
+      operationId: createInventoryTransaction
+      tags: [inventory]
+      summary: Create inventory transaction (barang masuk/keluar)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInventoryTransaction"
+      responses:
+        "201":
+          description: Transaction created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InventoryTransaction"
+
+  /inventory/transactions/{id}:
+    delete:
+      operationId: deleteInventoryTransaction
+      tags: [inventory]
+      summary: Delete inventory transaction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Transaction deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /inventory/summary:
+    get:
+      operationId: getInventorySummary
+      tags: [inventory]
+      summary: Get inventory summary
+      responses:
+        "200":
+          description: Inventory summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InventorySummary"
+
+  /complaints:
+    get:
+      operationId: getComplaints
+      tags: [complaints]
+      summary: Get all complaints
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [baru, diproses, selesai, ditolak]
+        - name: prioritas
+          in: query
+          schema:
+            type: string
+            enum: [rendah, sedang, tinggi]
+        - name: kategori
+          in: query
+          schema:
+            type: string
+            enum: [produk, layanan, pengiriman, lainnya]
+      responses:
+        "200":
+          description: List of complaints
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Complaint"
+    post:
+      operationId: createComplaint
+      tags: [complaints]
+      summary: Create new complaint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateComplaint"
+      responses:
+        "201":
+          description: Complaint created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Complaint"
+
+  /complaints/{id}:
+    get:
+      operationId: getComplaint
+      tags: [complaints]
+      summary: Get complaint by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Complaint detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Complaint"
+    put:
+      operationId: updateComplaint
+      tags: [complaints]
+      summary: Update complaint
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateComplaint"
+      responses:
+        "200":
+          description: Complaint updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Complaint"
+    delete:
+      operationId: deleteComplaint
+      tags: [complaints]
+      summary: Delete complaint
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Complaint deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /complaints/summary:
+    get:
+      operationId: getComplaintSummary
+      tags: [complaints]
+      summary: Get complaint counts by status
+      responses:
+        "200":
+          description: Complaint summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ComplaintSummary"
+
 components:
   schemas:
     HealthStatus:
@@ -522,3 +794,224 @@ components:
         - DINAS
         - SKMJ
         - SURAT_TUGAS
+
+    InventoryItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        kodeBarang:
+          type: string
+        namaBarang:
+          type: string
+        kategori:
+          type: string
+          nullable: true
+        satuan:
+          type: string
+          nullable: true
+        stok:
+          type: integer
+        keterangan:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - kodeBarang
+        - namaBarang
+        - stok
+        - createdAt
+
+    CreateInventoryItem:
+      type: object
+      properties:
+        kodeBarang:
+          type: string
+        namaBarang:
+          type: string
+        kategori:
+          type: string
+          nullable: true
+        satuan:
+          type: string
+          nullable: true
+        stok:
+          type: integer
+        keterangan:
+          type: string
+          nullable: true
+      required:
+        - kodeBarang
+        - namaBarang
+        - stok
+
+    InventoryTransaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        itemId:
+          type: integer
+        item:
+          $ref: "#/components/schemas/InventoryItem"
+        tipe:
+          type: string
+          enum: [masuk, keluar]
+        jumlah:
+          type: integer
+        tanggal:
+          type: string
+        keterangan:
+          type: string
+          nullable: true
+        penanggungJawab:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - itemId
+        - tipe
+        - jumlah
+        - tanggal
+        - createdAt
+
+    CreateInventoryTransaction:
+      type: object
+      properties:
+        itemId:
+          type: integer
+        tipe:
+          type: string
+          enum: [masuk, keluar]
+        jumlah:
+          type: integer
+        tanggal:
+          type: string
+        keterangan:
+          type: string
+          nullable: true
+        penanggungJawab:
+          type: string
+          nullable: true
+      required:
+        - itemId
+        - tipe
+        - jumlah
+        - tanggal
+
+    InventorySummary:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+        totalMasuk:
+          type: integer
+        totalKeluar:
+          type: integer
+      required:
+        - totalItems
+        - totalMasuk
+        - totalKeluar
+
+    Complaint:
+      type: object
+      properties:
+        id:
+          type: integer
+        namaPelanggan:
+          type: string
+        kontakPelanggan:
+          type: string
+          nullable: true
+        kategori:
+          type: string
+          enum: [produk, layanan, pengiriman, lainnya]
+        judul:
+          type: string
+        deskripsi:
+          type: string
+        status:
+          type: string
+          enum: [baru, diproses, selesai, ditolak]
+        prioritas:
+          type: string
+          enum: [rendah, sedang, tinggi]
+        tanggal:
+          type: string
+        penangananOleh:
+          type: string
+          nullable: true
+        catatanPenanganan:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - namaPelanggan
+        - kategori
+        - judul
+        - deskripsi
+        - status
+        - prioritas
+        - tanggal
+        - createdAt
+
+    CreateComplaint:
+      type: object
+      properties:
+        namaPelanggan:
+          type: string
+        kontakPelanggan:
+          type: string
+          nullable: true
+        kategori:
+          type: string
+          enum: [produk, layanan, pengiriman, lainnya]
+        judul:
+          type: string
+        deskripsi:
+          type: string
+        status:
+          type: string
+          enum: [baru, diproses, selesai, ditolak]
+        prioritas:
+          type: string
+          enum: [rendah, sedang, tinggi]
+        tanggal:
+          type: string
+        penangananOleh:
+          type: string
+          nullable: true
+        catatanPenanganan:
+          type: string
+          nullable: true
+      required:
+        - namaPelanggan
+        - kategori
+        - judul
+        - deskripsi
+        - status
+        - prioritas
+        - tanggal
+
+    ComplaintSummary:
+      type: object
+      properties:
+        baru:
+          type: integer
+        diproses:
+          type: integer
+        selesai:
+          type: integer
+        ditolak:
+          type: integer
+      required:
+        - baru
+        - diproses
+        - selesai
+        - ditolak

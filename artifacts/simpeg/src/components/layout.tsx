@@ -5,6 +5,8 @@ import {
   Clock, 
   FileText, 
   Menu,
+  Package,
+  MessageSquareWarning
 } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { Button } from "./ui/button";
@@ -18,6 +20,8 @@ export function Layout({ children }: { children: ReactNode }) {
     { name: "Data Pekerja", href: "/karyawan", icon: Users },
     { name: "Rekap Kehadiran", href: "/absensi", icon: Clock },
     { name: "Menu Dokumen", href: "/dokumen", icon: FileText },
+    { name: "Inventori", href: "/inventori", icon: Package },
+    { name: "Keluhan Pelanggan", href: "/keluhan", icon: MessageSquareWarning },
   ];
 
   return (
