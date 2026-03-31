@@ -16,7 +16,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Filter } from "lucide-react";
+import { Plus, Filter, CalendarCheck } from "lucide-react";
 import { format } from "date-fns";
 
 export default function Absensi() {
@@ -72,39 +72,41 @@ export default function Absensi() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'izin': return <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Izin</span>;
-      case 'cuti': return <span className="px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">Cuti</span>;
-      case 'dinas': return <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Dinas Luar</span>;
-      case 'tidak_hadir': return <span className="px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">Tidak Hadir</span>;
+      case 'izin': return <span className="px-3 py-1 rounded-lg text-xs font-bold shadow-sm border bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20">Izin</span>;
+      case 'cuti': return <span className="px-3 py-1 rounded-lg text-xs font-bold shadow-sm border bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20">Cuti</span>;
+      case 'dinas': return <span className="px-3 py-1 rounded-lg text-xs font-bold shadow-sm border bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20">Dinas Luar</span>;
+      case 'tidak_hadir': return <span className="px-3 py-1 rounded-lg text-xs font-bold shadow-sm border bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20">Tidak Hadir</span>;
       default: return null;
     }
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-8">
+      <div className="page-header flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Rekap Kehadiran</h1>
-          <p className="text-muted-foreground mt-1">Daftar ketidakhadiran, cuti, izin, dan dinas luar.</p>
+          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">Rekap Kehadiran</h1>
+          <p className="text-muted-foreground mt-2 text-lg">Daftar ketidakhadiran, cuti, izin, dan dinas luar.</p>
         </div>
-        <Button onClick={() => setIsFormOpen(true)} className="gap-2">
-          <Plus className="h-4 w-4" />
+        <Button onClick={() => setIsFormOpen(true)} className="btn-primary-gradient rounded-xl px-6 h-12 shadow-lg hover:shadow-xl">
+          <Plus className="h-5 w-5 mr-2" />
           Input Rekap Baru
         </Button>
       </div>
 
-      <Card className="border-none shadow-sm">
-        <div className="p-4 border-b flex items-center gap-4">
-          <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-            <Filter className="h-4 w-4" />
-            Filter Status:
+      <Card className="rounded-2xl shadow-sm border-border/50 overflow-hidden">
+        <div className="p-5 bg-muted/20 border-b flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+              <Filter className="h-5 w-5" />
+            </div>
+            <span className="font-semibold">Filter Status:</span>
           </div>
           <Select value={filterStatus} onValueChange={setFilterStatus}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[250px] bg-background border-border/50 shadow-sm h-11 rounded-xl">
               <SelectValue placeholder="Semua Status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Semua Status</SelectItem>
+              <SelectItem value="all">Semua Status (Tampilkan Semua)</SelectItem>
               <SelectItem value="izin">Izin</SelectItem>
               <SelectItem value="cuti">Cuti</SelectItem>
               <SelectItem value="dinas">Dinas Luar</SelectItem>
@@ -113,39 +115,58 @@ export default function Absensi() {
           </Select>
         </div>
         <CardContent className="p-0">
-          <Table>
-            <TableHeader className="bg-muted/50">
-              <TableRow>
-                <TableHead>Tanggal</TableHead>
+          <Table className="table-premium">
+            <TableHeader>
+              <TableRow className="table-premium-header">
+                <TableHead className="pl-6 w-[200px]">Tanggal</TableHead>
                 <TableHead>Pegawai</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Alasan</TableHead>
+                <TableHead className="w-[180px]">Status</TableHead>
+                <TableHead className="pr-6">Alasan / Keterangan</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center h-32">Memuat data...</TableCell>
+                  <TableCell colSpan={4} className="text-center h-48">
+                    <div className="flex flex-col items-center justify-center">
+                      <div className="h-8 w-8 rounded-full border-4 border-primary border-t-transparent animate-spin mb-4" />
+                      <p className="text-muted-foreground font-medium">Memuat rekap kehadiran...</p>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ) : filteredRecords?.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center h-32 text-muted-foreground">Tidak ada record kehadiran.</TableCell>
+                  <TableCell colSpan={4} className="text-center h-48 text-muted-foreground">
+                    <div className="flex flex-col items-center justify-center">
+                      <CalendarCheck className="h-12 w-12 text-muted-foreground/30 mb-4" />
+                      <p className="text-lg font-medium">Tidak ada record kehadiran.</p>
+                      <p className="text-sm mt-1">Belum ada data untuk filter yang dipilih.</p>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ) : (
                 filteredRecords?.map((record) => (
-                  <TableRow key={record.id}>
-                    <TableCell className="font-medium whitespace-nowrap">
+                  <TableRow key={record.id} className="table-premium-row">
+                    <TableCell className="pl-6 font-bold whitespace-nowrap">
                       {format(new Date(record.tanggal), 'dd MMM yyyy')}
                     </TableCell>
                     <TableCell>
-                      <div className="flex flex-col">
-                        <span className="font-medium">{record.employee?.nama || `ID ${record.employeeId}`}</span>
-                        <span className="text-xs text-muted-foreground">{record.employee?.nopek}</span>
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/50 dark:to-purple-900/50 flex items-center justify-center text-primary font-bold shadow-sm">
+                          {record.employee?.nama?.charAt(0) || "P"}
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-foreground">{record.employee?.nama || `ID ${record.employeeId}`}</span>
+                          <span className="font-mono text-xs text-muted-foreground px-1.5 py-0.5 bg-muted/50 rounded inline-block mt-0.5 w-fit border border-border/50">{record.employee?.nopek}</span>
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell>{getStatusBadge(record.status)}</TableCell>
-                    <TableCell className="max-w-[300px] truncate" title={record.alasan || ''}>
-                      {record.alasan || '-'}
+                    <TableCell className="pr-6">
+                      <div className="font-medium">{record.alasan || '-'}</div>
+                      {record.keterangan && (
+                        <div className="text-sm text-muted-foreground mt-0.5">{record.keterangan}</div>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))
@@ -157,16 +178,18 @@ export default function Absensi() {
 
       {/* Form Dialog */}
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <form onSubmit={handleSave}>
+        <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden border-0 shadow-2xl">
+          <div className="bg-gradient-to-r from-slate-900 to-indigo-950 p-6 text-white">
             <DialogHeader>
-              <DialogTitle>Input Rekap Kehadiran</DialogTitle>
+              <DialogTitle className="text-2xl font-bold tracking-tight text-white">Input Rekap Kehadiran</DialogTitle>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
+          </div>
+          <form onSubmit={handleSave} className="p-6 space-y-5 bg-card">
+            <div className="grid gap-5">
               <div className="space-y-2">
-                <Label htmlFor="employee">Pegawai *</Label>
+                <Label htmlFor="employee" className="font-semibold">Pegawai *</Label>
                 <Select value={formData.employeeId} onValueChange={v => setFormData({...formData, employeeId: v})}>
-                  <SelectTrigger id="employee">
+                  <SelectTrigger id="employee" className="bg-muted/30 h-11">
                     <SelectValue placeholder="Pilih Pegawai" />
                   </SelectTrigger>
                   <SelectContent>
@@ -176,37 +199,39 @@ export default function Absensi() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="status">Status Kehadiran *</Label>
-                <Select value={formData.status} onValueChange={v => setFormData({...formData, status: v as AttendanceRecordStatus})}>
-                  <SelectTrigger id="status">
-                    <SelectValue placeholder="Pilih Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="izin">Izin</SelectItem>
-                    <SelectItem value="cuti">Cuti</SelectItem>
-                    <SelectItem value="dinas">Dinas Luar</SelectItem>
-                    <SelectItem value="tidak_hadir">Tidak Hadir</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="grid grid-cols-2 gap-5">
+                <div className="space-y-2">
+                  <Label htmlFor="status" className="font-semibold">Status Kehadiran *</Label>
+                  <Select value={formData.status} onValueChange={v => setFormData({...formData, status: v as AttendanceRecordStatus})}>
+                    <SelectTrigger id="status" className="bg-muted/30 h-11">
+                      <SelectValue placeholder="Pilih Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="izin">Izin</SelectItem>
+                      <SelectItem value="cuti">Cuti</SelectItem>
+                      <SelectItem value="dinas">Dinas Luar</SelectItem>
+                      <SelectItem value="tidak_hadir">Tidak Hadir</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="tanggal" className="font-semibold">Tanggal *</Label>
+                  <Input type="date" id="tanggal" className="bg-muted/30 h-11" value={formData.tanggal} onChange={e => setFormData({...formData, tanggal: e.target.value})} required />
+                </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="tanggal">Tanggal *</Label>
-                <Input type="date" id="tanggal" value={formData.tanggal} onChange={e => setFormData({...formData, tanggal: e.target.value})} required />
+                <Label htmlFor="alasan" className="font-semibold">Alasan Singkat</Label>
+                <Input id="alasan" className="bg-muted/30 h-11" value={formData.alasan} onChange={e => setFormData({...formData, alasan: e.target.value})} placeholder="Contoh: Sakit demam..." />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="alasan">Alasan Singkat</Label>
-                <Input id="alasan" value={formData.alasan} onChange={e => setFormData({...formData, alasan: e.target.value})} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="keterangan">Keterangan Tambahan</Label>
-                <Input id="keterangan" value={formData.keterangan} onChange={e => setFormData({...formData, keterangan: e.target.value})} />
+                <Label htmlFor="keterangan" className="font-semibold">Keterangan Tambahan</Label>
+                <Input id="keterangan" className="bg-muted/30 h-11" value={formData.keterangan} onChange={e => setFormData({...formData, keterangan: e.target.value})} placeholder="Opsional..." />
               </div>
             </div>
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setIsFormOpen(false)}>Batal</Button>
-              <Button type="submit" disabled={createMutation.isPending || !formData.employeeId || !formData.status}>
-                Simpan
+            <DialogFooter className="pt-4 border-t border-border/50 mt-4">
+              <Button type="button" variant="outline" className="h-11 px-6 rounded-xl" onClick={() => setIsFormOpen(false)}>Batal</Button>
+              <Button type="submit" className="btn-primary-gradient h-11 px-8 rounded-xl" disabled={createMutation.isPending || !formData.employeeId || !formData.status}>
+                Simpan Kehadiran
               </Button>
             </DialogFooter>
           </form>

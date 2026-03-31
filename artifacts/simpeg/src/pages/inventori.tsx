@@ -157,51 +157,68 @@ export default function Inventori() {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold tracking-tight text-foreground">Inventori Barang</h2>
-        <p className="text-muted-foreground">Manajemen stok barang masuk dan keluar perusahaan.</p>
+    <div className="space-y-8">
+      <div className="page-header">
+        <h2 className="text-3xl font-extrabold tracking-tight text-foreground">Inventori Barang</h2>
+        <p className="text-muted-foreground mt-2 text-lg">Manajemen stok barang masuk dan keluar perusahaan.</p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Jenis Barang</CardTitle>
-            <Package className="h-4 w-4 text-primary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{summary?.totalItems || 0}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Masuk</CardTitle>
-            <ArrowDownToLine className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{summary?.totalMasuk || 0}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Keluar</CardTitle>
-            <ArrowUpFromLine className="h-4 w-4 text-red-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{summary?.totalKeluar || 0}</div>
-          </CardContent>
-        </Card>
+      <div className="grid gap-6 md:grid-cols-3">
+        <div className="stat-card stat-card-indigo">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-white/80 uppercase tracking-wider">Total Jenis Barang</p>
+              <div className="text-4xl font-extrabold mt-1">{summary?.totalItems || 0}</div>
+            </div>
+            <div className="h-14 w-14 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/20 shadow-inner">
+              <Package className="h-7 w-7 text-white" />
+            </div>
+          </div>
+          <div className="absolute -right-6 -bottom-6 opacity-10 pointer-events-none">
+            <Package className="h-32 w-32" />
+          </div>
+        </div>
+        
+        <div className="stat-card stat-card-teal">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-white/80 uppercase tracking-wider">Total Masuk</p>
+              <div className="text-4xl font-extrabold mt-1">{summary?.totalMasuk || 0}</div>
+            </div>
+            <div className="h-14 w-14 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/20 shadow-inner">
+              <ArrowDownToLine className="h-7 w-7 text-white" />
+            </div>
+          </div>
+          <div className="absolute -right-6 -bottom-6 opacity-10 pointer-events-none">
+            <ArrowDownToLine className="h-32 w-32" />
+          </div>
+        </div>
+
+        <div className="stat-card stat-card-red">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-white/80 uppercase tracking-wider">Total Keluar</p>
+              <div className="text-4xl font-extrabold mt-1">{summary?.totalKeluar || 0}</div>
+            </div>
+            <div className="h-14 w-14 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/20 shadow-inner">
+              <ArrowUpFromLine className="h-7 w-7 text-white" />
+            </div>
+          </div>
+          <div className="absolute -right-6 -bottom-6 opacity-10 pointer-events-none">
+            <ArrowUpFromLine className="h-32 w-32" />
+          </div>
+        </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="items">Daftar Barang</TabsTrigger>
-          <TabsTrigger value="transactions">Riwayat Transaksi</TabsTrigger>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <TabsList className="bg-muted/50 p-1 rounded-xl">
+          <TabsTrigger value="items" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">Daftar Barang</TabsTrigger>
+          <TabsTrigger value="transactions" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">Riwayat Transaksi</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="items" className="space-y-4">
+        <TabsContent value="items" className="space-y-6 outline-none">
           <div className="flex justify-between items-center">
-            <h3 className="text-lg font-medium">Daftar Barang</h3>
+            <h3 className="text-xl font-bold">Daftar Barang</h3>
             <Dialog open={isItemDialogOpen} onOpenChange={(open) => {
               setIsItemDialogOpen(open);
               if (!open) {
@@ -210,25 +227,25 @@ export default function Inventori() {
               }
             }}>
               <DialogTrigger asChild>
-                <Button>
-                  <Plus className="mr-2 h-4 w-4" />
+                <Button className="btn-primary-gradient rounded-xl px-5">
+                  <Plus className="mr-2 h-5 w-5" />
                   Tambah Barang
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
-                  <DialogTitle>{editingItem ? 'Edit Barang' : 'Tambah Barang Baru'}</DialogTitle>
+                  <DialogTitle className="text-xl">{editingItem ? 'Edit Barang' : 'Tambah Barang Baru'}</DialogTitle>
                 </DialogHeader>
                 <Form {...itemForm}>
-                  <form onSubmit={itemForm.handleSubmit(onSubmitItem)} className="space-y-4">
+                  <form onSubmit={itemForm.handleSubmit(onSubmitItem)} className="space-y-5 pt-4">
                     <FormField
                       control={itemForm.control}
                       name="kodeBarang"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Kode Barang</FormLabel>
+                          <FormLabel className="font-semibold">Kode Barang</FormLabel>
                           <FormControl>
-                            <Input placeholder="BRG-001" {...field} />
+                            <Input placeholder="BRG-001" className="bg-muted/30" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -239,23 +256,23 @@ export default function Inventori() {
                       name="namaBarang"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Nama Barang</FormLabel>
+                          <FormLabel className="font-semibold">Nama Barang</FormLabel>
                           <FormControl>
-                            <Input placeholder="Kertas HVS A4" {...field} />
+                            <Input placeholder="Kertas HVS A4" className="bg-muted/30" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-5">
                       <FormField
                         control={itemForm.control}
                         name="kategori"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Kategori</FormLabel>
+                            <FormLabel className="font-semibold">Kategori</FormLabel>
                             <FormControl>
-                              <Input placeholder="ATK" {...field} />
+                              <Input placeholder="ATK" className="bg-muted/30" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -266,9 +283,9 @@ export default function Inventori() {
                         name="satuan"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Satuan</FormLabel>
+                            <FormLabel className="font-semibold">Satuan</FormLabel>
                             <FormControl>
-                              <Input placeholder="Rim" {...field} />
+                              <Input placeholder="Rim" className="bg-muted/30" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -280,9 +297,9 @@ export default function Inventori() {
                       name="stok"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Stok Awal</FormLabel>
+                          <FormLabel className="font-semibold">Stok Awal</FormLabel>
                           <FormControl>
-                            <Input type="number" min="0" {...field} />
+                            <Input type="number" min="0" className="bg-muted/30" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -293,17 +310,17 @@ export default function Inventori() {
                       name="keterangan"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Keterangan</FormLabel>
+                          <FormLabel className="font-semibold">Keterangan</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input className="bg-muted/30" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     <div className="flex justify-end pt-4">
-                      <Button type="submit" disabled={createItem.isPending || updateItem.isPending}>
-                        Simpan
+                      <Button type="submit" className="btn-primary-gradient" disabled={createItem.isPending || updateItem.isPending}>
+                        Simpan Barang
                       </Button>
                     </div>
                   </form>
@@ -312,39 +329,46 @@ export default function Inventori() {
             </Dialog>
           </div>
 
-          <Card>
-            <Table>
+          <Card className="rounded-2xl shadow-sm border-border/50 overflow-hidden">
+            <Table className="table-premium">
               <TableHeader>
-                <TableRow>
-                  <TableHead>Kode</TableHead>
+                <TableRow className="table-premium-header">
+                  <TableHead className="pl-6">Kode</TableHead>
                   <TableHead>Nama Barang</TableHead>
                   <TableHead>Kategori</TableHead>
                   <TableHead>Satuan</TableHead>
                   <TableHead className="text-right">Stok</TableHead>
-                  <TableHead className="w-[100px]"></TableHead>
+                  <TableHead className="w-[120px] pr-6"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {items.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                      Belum ada data barang.
+                    <TableCell colSpan={6} className="text-center text-muted-foreground py-12">
+                      <div className="flex flex-col items-center justify-center">
+                        <Package className="h-10 w-10 text-muted-foreground/30 mb-3" />
+                        <p>Belum ada data barang.</p>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ) : (
                   items.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="font-medium">{item.kodeBarang}</TableCell>
-                      <TableCell>{item.namaBarang}</TableCell>
-                      <TableCell>{item.kategori || "-"}</TableCell>
-                      <TableCell>{item.satuan || "-"}</TableCell>
-                      <TableCell className="text-right font-bold">{item.stok}</TableCell>
+                    <TableRow key={item.id} className="table-premium-row">
+                      <TableCell className="font-bold pl-6">{item.kodeBarang}</TableCell>
+                      <TableCell className="font-medium text-foreground">{item.namaBarang}</TableCell>
                       <TableCell>
-                        <div className="flex justify-end gap-2">
-                          <Button variant="ghost" size="icon" onClick={() => openEditItem(item)}>
+                        <span className="bg-secondary text-secondary-foreground px-2.5 py-1 rounded-md text-xs font-semibold">
+                          {item.kategori || "-"}
+                        </span>
+                      </TableCell>
+                      <TableCell>{item.satuan || "-"}</TableCell>
+                      <TableCell className="text-right font-bold text-base">{item.stok}</TableCell>
+                      <TableCell className="pr-6">
+                        <div className="flex justify-end gap-1">
+                          <Button variant="ghost" size="icon" className="hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" onClick={() => openEditItem(item)}>
                             <Pencil className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="icon" onClick={() => handleDeleteItem(item.id)}>
+                          <Button variant="ghost" size="icon" className="hover:bg-destructive/10 hover:text-destructive rounded-lg transition-colors" onClick={() => handleDeleteItem(item.id)}>
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
                         </div>
@@ -357,9 +381,9 @@ export default function Inventori() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="transactions" className="space-y-4">
+        <TabsContent value="transactions" className="space-y-6 outline-none">
           <div className="flex justify-between items-center">
-            <h3 className="text-lg font-medium">Riwayat Transaksi</h3>
+            <h3 className="text-xl font-bold">Riwayat Transaksi</h3>
             <Dialog open={isTransactionDialogOpen} onOpenChange={(open) => {
               setIsTransactionDialogOpen(open);
               if (!open) {
@@ -367,26 +391,26 @@ export default function Inventori() {
               }
             }}>
               <DialogTrigger asChild>
-                <Button>
-                  <Plus className="mr-2 h-4 w-4" />
+                <Button className="btn-primary-gradient rounded-xl px-5">
+                  <Plus className="mr-2 h-5 w-5" />
                   Catat Transaksi
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
-                  <DialogTitle>Catat Transaksi Baru</DialogTitle>
+                  <DialogTitle className="text-xl">Catat Transaksi Baru</DialogTitle>
                 </DialogHeader>
                 <Form {...transactionForm}>
-                  <form onSubmit={transactionForm.handleSubmit(onSubmitTransaction)} className="space-y-4">
+                  <form onSubmit={transactionForm.handleSubmit(onSubmitTransaction)} className="space-y-5 pt-4">
                     <FormField
                       control={transactionForm.control}
                       name="itemId"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Pilih Barang</FormLabel>
+                          <FormLabel className="font-semibold">Pilih Barang</FormLabel>
                           <Select onValueChange={(v) => field.onChange(parseInt(v))} value={field.value ? field.value.toString() : undefined}>
                             <FormControl>
-                              <SelectTrigger>
+                              <SelectTrigger className="bg-muted/30">
                                 <SelectValue placeholder="Pilih barang..." />
                               </SelectTrigger>
                             </FormControl>
@@ -402,16 +426,16 @@ export default function Inventori() {
                         </FormItem>
                       )}
                     />
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-5">
                       <FormField
                         control={transactionForm.control}
                         name="tipe"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Tipe Transaksi</FormLabel>
+                            <FormLabel className="font-semibold">Tipe Transaksi</FormLabel>
                             <Select onValueChange={field.onChange} value={field.value}>
                               <FormControl>
-                                <SelectTrigger>
+                                <SelectTrigger className="bg-muted/30">
                                   <SelectValue />
                                 </SelectTrigger>
                               </FormControl>
@@ -429,24 +453,24 @@ export default function Inventori() {
                         name="jumlah"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Jumlah</FormLabel>
+                            <FormLabel className="font-semibold">Jumlah</FormLabel>
                             <FormControl>
-                              <Input type="number" min="1" {...field} />
+                              <Input type="number" min="1" className="bg-muted/30" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-5">
                       <FormField
                         control={transactionForm.control}
                         name="tanggal"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Tanggal</FormLabel>
+                            <FormLabel className="font-semibold">Tanggal</FormLabel>
                             <FormControl>
-                              <Input type="date" {...field} />
+                              <Input type="date" className="bg-muted/30" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -457,9 +481,9 @@ export default function Inventori() {
                         name="penanggungJawab"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Penanggung Jawab</FormLabel>
+                            <FormLabel className="font-semibold">Penanggung Jawab</FormLabel>
                             <FormControl>
-                              <Input {...field} />
+                              <Input className="bg-muted/30" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -471,16 +495,16 @@ export default function Inventori() {
                       name="keterangan"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Keterangan</FormLabel>
+                          <FormLabel className="font-semibold">Keterangan</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input className="bg-muted/30" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     <div className="flex justify-end pt-4">
-                      <Button type="submit" disabled={createTransaction.isPending}>
+                      <Button type="submit" className="btn-primary-gradient" disabled={createTransaction.isPending}>
                         Simpan Transaksi
                       </Button>
                     </div>
@@ -490,49 +514,53 @@ export default function Inventori() {
             </Dialog>
           </div>
 
-          <Card>
-            <Table>
+          <Card className="rounded-2xl shadow-sm border-border/50 overflow-hidden">
+            <Table className="table-premium">
               <TableHeader>
-                <TableRow>
-                  <TableHead>Tanggal</TableHead>
+                <TableRow className="table-premium-header">
+                  <TableHead className="pl-6">Tanggal</TableHead>
                   <TableHead>Tipe</TableHead>
                   <TableHead>Barang</TableHead>
                   <TableHead className="text-right">Jumlah</TableHead>
                   <TableHead>Penanggung Jawab</TableHead>
                   <TableHead>Keterangan</TableHead>
-                  <TableHead></TableHead>
+                  <TableHead className="pr-6"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {transactions.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
-                      Belum ada transaksi.
+                    <TableCell colSpan={7} className="text-center text-muted-foreground py-12">
+                      <div className="flex flex-col items-center justify-center">
+                        <ArrowDownToLine className="h-10 w-10 text-muted-foreground/30 mb-3" />
+                        <p>Belum ada transaksi.</p>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ) : (
                   transactions.map((trx) => (
-                    <TableRow key={trx.id}>
-                      <TableCell>{format(new Date(trx.tanggal), 'dd MMM yyyy')}</TableCell>
+                    <TableRow key={trx.id} className="table-premium-row">
+                      <TableCell className="pl-6 font-medium">{format(new Date(trx.tanggal), 'dd MMM yyyy')}</TableCell>
                       <TableCell>
-                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                          trx.tipe === 'masuk' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                        <span className={`inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold shadow-sm border ${
+                          trx.tipe === 'masuk' ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20' : 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20'
                         }`}>
                           {trx.tipe === 'masuk' ? 'Masuk' : 'Keluar'}
                         </span>
                       </TableCell>
-                      <TableCell className="font-medium">{trx.item?.namaBarang || `Barang #${trx.itemId}`}</TableCell>
-                      <TableCell className="text-right font-bold">
-                        <span className={trx.tipe === 'masuk' ? 'text-green-600' : 'text-red-600'}>
+                      <TableCell className="font-bold text-foreground">{trx.item?.namaBarang || `Barang #${trx.itemId}`}</TableCell>
+                      <TableCell className="text-right font-extrabold text-base">
+                        <span className={trx.tipe === 'masuk' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}>
                           {trx.tipe === 'masuk' ? '+' : '-'}{trx.jumlah}
                         </span>
                       </TableCell>
                       <TableCell>{trx.penanggungJawab || "-"}</TableCell>
-                      <TableCell className="text-muted-foreground">{trx.keterangan || "-"}</TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-muted-foreground max-w-[200px] truncate">{trx.keterangan || "-"}</TableCell>
+                      <TableCell className="text-right pr-6">
                         <Button 
                           variant="ghost" 
-                          size="icon" 
+                          size="icon"
+                          className="hover:bg-destructive/10 hover:text-destructive rounded-lg transition-colors"
                           onClick={() => {
                             if (confirm("Hapus transaksi ini? Stok akan kembali menyesuaikan.")) {
                               deleteTransaction.mutate({ id: trx.id }, {

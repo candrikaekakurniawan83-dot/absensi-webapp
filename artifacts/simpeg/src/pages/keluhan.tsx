@@ -140,52 +140,52 @@ export default function Keluhan() {
 
   const getPriorityBadge = (p: ComplaintPrioritas) => {
     switch(p) {
-      case "tinggi": return <Badge variant="destructive">Tinggi</Badge>;
-      case "sedang": return <Badge className="bg-yellow-500 hover:bg-yellow-600 text-white">Sedang</Badge>;
-      case "rendah": return <Badge className="bg-green-500 hover:bg-green-600 text-white">Rendah</Badge>;
+      case "tinggi": return <Badge className="bg-rose-500 hover:bg-rose-600 text-white font-bold shadow-sm border-0">Tinggi</Badge>;
+      case "sedang": return <Badge className="bg-amber-500 hover:bg-amber-600 text-white font-bold shadow-sm border-0">Sedang</Badge>;
+      case "rendah": return <Badge className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold shadow-sm border-0">Rendah</Badge>;
       default: return null;
     }
   };
 
   const getStatusBadge = (s: ComplaintStatus) => {
     switch(s) {
-      case "baru": return <Badge variant="secondary">Baru</Badge>;
-      case "diproses": return <Badge className="bg-blue-500 hover:bg-blue-600 text-white">Diproses</Badge>;
-      case "selesai": return <Badge className="bg-green-600 hover:bg-green-700 text-white">Selesai</Badge>;
-      case "ditolak": return <Badge variant="destructive">Ditolak</Badge>;
+      case "baru": return <Badge variant="secondary" className="bg-secondary/80 font-bold border-0">Baru</Badge>;
+      case "diproses": return <Badge className="bg-blue-500 hover:bg-blue-600 text-white font-bold shadow-sm border-0">Diproses</Badge>;
+      case "selesai": return <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-sm border-0">Selesai</Badge>;
+      case "ditolak": return <Badge variant="destructive" className="font-bold border-0 shadow-sm">Ditolak</Badge>;
       default: return null;
     }
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-8">
+      <div className="page-header flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-foreground">Keluhan Pelanggan</h2>
-          <p className="text-muted-foreground">Pencatatan dan pelacakan keluhan dari pelanggan.</p>
+          <h2 className="text-3xl font-extrabold tracking-tight text-foreground">Keluhan Pelanggan</h2>
+          <p className="text-muted-foreground mt-2 text-lg">Pencatatan dan pelacakan keluhan dari pelanggan.</p>
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
+            <Button className="btn-primary-gradient rounded-xl px-6 h-12 shadow-lg hover:shadow-xl">
+              <Plus className="mr-2 h-5 w-5" />
               Tambah Keluhan
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>Catat Keluhan Baru</DialogTitle>
+              <DialogTitle className="text-2xl">Catat Keluhan Baru</DialogTitle>
             </DialogHeader>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 pt-4">
+                <div className="grid grid-cols-2 gap-5">
                   <FormField
                     control={form.control}
                     name="namaPelanggan"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Nama Pelanggan *</FormLabel>
+                        <FormLabel className="font-semibold">Nama Pelanggan *</FormLabel>
                         <FormControl>
-                          <Input {...field} />
+                          <Input className="bg-muted/30" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -196,9 +196,9 @@ export default function Keluhan() {
                     name="kontakPelanggan"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Kontak (No. HP / Email)</FormLabel>
+                        <FormLabel className="font-semibold">Kontak (No. HP / Email)</FormLabel>
                         <FormControl>
-                          <Input {...field} />
+                          <Input className="bg-muted/30" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -210,24 +210,24 @@ export default function Keluhan() {
                   name="judul"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Judul Keluhan *</FormLabel>
+                      <FormLabel className="font-semibold">Judul Keluhan *</FormLabel>
                       <FormControl>
-                        <Input placeholder="Singkat dan jelas..." {...field} />
+                        <Input placeholder="Singkat dan jelas..." className="bg-muted/30" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-5">
                   <FormField
                     control={form.control}
                     name="kategori"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Kategori *</FormLabel>
+                        <FormLabel className="font-semibold">Kategori *</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger>
+                            <SelectTrigger className="bg-muted/30">
                               <SelectValue />
                             </SelectTrigger>
                           </FormControl>
@@ -247,10 +247,10 @@ export default function Keluhan() {
                     name="prioritas"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Prioritas *</FormLabel>
+                        <FormLabel className="font-semibold">Prioritas *</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger>
+                            <SelectTrigger className="bg-muted/30">
                               <SelectValue />
                             </SelectTrigger>
                           </FormControl>
@@ -270,23 +270,23 @@ export default function Keluhan() {
                   name="deskripsi"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Deskripsi Detail *</FormLabel>
+                      <FormLabel className="font-semibold">Deskripsi Detail *</FormLabel>
                       <FormControl>
-                        <Textarea rows={4} {...field} />
+                        <Textarea rows={4} className="bg-muted/30 resize-none" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-5">
                   <FormField
                     control={form.control}
                     name="tanggal"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Tanggal Kejadian *</FormLabel>
+                        <FormLabel className="font-semibold">Tanggal Kejadian *</FormLabel>
                         <FormControl>
-                          <Input type="date" {...field} />
+                          <Input type="date" className="bg-muted/30" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -297,10 +297,10 @@ export default function Keluhan() {
                     name="status"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Status Awal</FormLabel>
+                        <FormLabel className="font-semibold">Status Awal</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger>
+                            <SelectTrigger className="bg-muted/30">
                               <SelectValue />
                             </SelectTrigger>
                           </FormControl>
@@ -317,7 +317,7 @@ export default function Keluhan() {
                   />
                 </div>
                 <div className="flex justify-end pt-4">
-                  <Button type="submit" disabled={createComplaint.isPending}>
+                  <Button type="submit" className="btn-primary-gradient px-6" disabled={createComplaint.isPending}>
                     Simpan Keluhan
                   </Button>
                 </div>
@@ -327,48 +327,71 @@ export default function Keluhan() {
         </Dialog>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card className="bg-secondary/20">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Baru</CardTitle>
-            <AlertCircle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{summary?.baru || 0}</div>
-          </CardContent>
-        </Card>
-        <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-900">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-blue-800 dark:text-blue-300">Diproses</CardTitle>
-            <Clock className="h-4 w-4 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-800 dark:text-blue-300">{summary?.diproses || 0}</div>
-          </CardContent>
-        </Card>
-        <Card className="bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-900">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-green-800 dark:text-green-300">Selesai</CardTitle>
-            <CheckCircle2 className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-800 dark:text-green-300">{summary?.selesai || 0}</div>
-          </CardContent>
-        </Card>
-        <Card className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-red-800 dark:text-red-300">Ditolak</CardTitle>
-            <XCircle className="h-4 w-4 text-red-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-800 dark:text-red-300">{summary?.ditolak || 0}</div>
-          </CardContent>
-        </Card>
+      <div className="grid gap-6 md:grid-cols-4">
+        <div className="stat-card stat-card-purple">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-white/80 uppercase tracking-wider">Baru</p>
+              <div className="text-4xl font-extrabold mt-1">{summary?.baru || 0}</div>
+            </div>
+            <div className="h-14 w-14 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/20 shadow-inner">
+              <AlertCircle className="h-7 w-7 text-white" />
+            </div>
+          </div>
+          <div className="absolute -right-6 -bottom-6 opacity-10 pointer-events-none">
+            <AlertCircle className="h-32 w-32" />
+          </div>
+        </div>
+        
+        <div className="stat-card stat-card-blue">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-white/80 uppercase tracking-wider">Diproses</p>
+              <div className="text-4xl font-extrabold mt-1">{summary?.diproses || 0}</div>
+            </div>
+            <div className="h-14 w-14 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/20 shadow-inner">
+              <Clock className="h-7 w-7 text-white" />
+            </div>
+          </div>
+          <div className="absolute -right-6 -bottom-6 opacity-10 pointer-events-none">
+            <Clock className="h-32 w-32" />
+          </div>
+        </div>
+
+        <div className="stat-card stat-card-green">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-white/80 uppercase tracking-wider">Selesai</p>
+              <div className="text-4xl font-extrabold mt-1">{summary?.selesai || 0}</div>
+            </div>
+            <div className="h-14 w-14 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/20 shadow-inner">
+              <CheckCircle2 className="h-7 w-7 text-white" />
+            </div>
+          </div>
+          <div className="absolute -right-6 -bottom-6 opacity-10 pointer-events-none">
+            <CheckCircle2 className="h-32 w-32" />
+          </div>
+        </div>
+
+        <div className="stat-card stat-card-red">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-white/80 uppercase tracking-wider">Ditolak</p>
+              <div className="text-4xl font-extrabold mt-1">{summary?.ditolak || 0}</div>
+            </div>
+            <div className="h-14 w-14 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/20 shadow-inner">
+              <XCircle className="h-7 w-7 text-white" />
+            </div>
+          </div>
+          <div className="absolute -right-6 -bottom-6 opacity-10 pointer-events-none">
+            <XCircle className="h-32 w-32" />
+          </div>
+        </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 mb-4">
+      <div className="flex flex-col sm:flex-row gap-4 bg-card p-4 rounded-xl shadow-sm border border-border/50">
         <Select value={filterStatus} onValueChange={(v: any) => setFilterStatus(v)}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[200px] border-border/50 bg-muted/20 focus:ring-primary">
             <SelectValue placeholder="Semua Status" />
           </SelectTrigger>
           <SelectContent>
@@ -380,7 +403,7 @@ export default function Keluhan() {
           </SelectContent>
         </Select>
         <Select value={filterPrioritas} onValueChange={(v: any) => setFilterPrioritas(v)}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[200px] border-border/50 bg-muted/20 focus:ring-primary">
             <SelectValue placeholder="Semua Prioritas" />
           </SelectTrigger>
           <SelectContent>
@@ -391,7 +414,7 @@ export default function Keluhan() {
           </SelectContent>
         </Select>
         <Select value={filterKategori} onValueChange={(v: any) => setFilterKategori(v)}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[200px] border-border/50 bg-muted/20 focus:ring-primary">
             <SelectValue placeholder="Semua Kategori" />
           </SelectTrigger>
           <SelectContent>
@@ -404,45 +427,53 @@ export default function Keluhan() {
         </Select>
       </div>
 
-      <Card>
-        <Table>
+      <Card className="rounded-2xl shadow-sm border-border/50 overflow-hidden">
+        <Table className="table-premium">
           <TableHeader>
-            <TableRow>
-              <TableHead>Tanggal</TableHead>
+            <TableRow className="table-premium-header">
+              <TableHead className="pl-6">Tanggal</TableHead>
               <TableHead>Pelanggan</TableHead>
               <TableHead>Kategori</TableHead>
               <TableHead>Judul</TableHead>
               <TableHead>Prioritas</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead className="pr-6">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {complaints.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                  Tidak ada data keluhan yang sesuai filter.
+                <TableCell colSpan={6} className="text-center text-muted-foreground py-16">
+                  <div className="flex flex-col items-center justify-center">
+                    <MessageSquareWarning className="h-10 w-10 text-muted-foreground/30 mb-3" />
+                    <p className="text-lg font-medium">Tidak ada data keluhan</p>
+                    <p className="text-sm">Tidak ada keluhan yang sesuai dengan filter Anda.</p>
+                  </div>
                 </TableCell>
               </TableRow>
             ) : (
               complaints.map((complaint) => (
                 <TableRow 
                   key={complaint.id} 
-                  className="cursor-pointer hover:bg-muted/50"
+                  className="table-premium-row cursor-pointer group"
                   onClick={() => handleRowClick(complaint)}
                 >
-                  <TableCell>{format(new Date(complaint.tanggal), 'dd MMM yyyy')}</TableCell>
-                  <TableCell className="font-medium">
-                    {complaint.namaPelanggan}
+                  <TableCell className="pl-6 font-medium whitespace-nowrap">{format(new Date(complaint.tanggal), 'dd MMM yyyy')}</TableCell>
+                  <TableCell>
+                    <div className="font-bold text-foreground group-hover:text-primary transition-colors">{complaint.namaPelanggan}</div>
                     {complaint.kontakPelanggan && (
-                      <div className="text-xs text-muted-foreground">{complaint.kontakPelanggan}</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">{complaint.kontakPelanggan}</div>
                     )}
                   </TableCell>
-                  <TableCell className="capitalize">{complaint.kategori}</TableCell>
-                  <TableCell className="max-w-[200px] truncate" title={complaint.judul}>
+                  <TableCell>
+                    <span className="capitalize bg-secondary px-3 py-1 rounded-full text-xs font-semibold text-secondary-foreground">
+                      {complaint.kategori}
+                    </span>
+                  </TableCell>
+                  <TableCell className="max-w-[250px] truncate font-medium" title={complaint.judul}>
                     {complaint.judul}
                   </TableCell>
                   <TableCell>{getPriorityBadge(complaint.prioritas)}</TableCell>
-                  <TableCell>{getStatusBadge(complaint.status)}</TableCell>
+                  <TableCell className="pr-6">{getStatusBadge(complaint.status)}</TableCell>
                 </TableRow>
               ))
             )}
@@ -451,45 +482,58 @@ export default function Keluhan() {
       </Card>
 
       <Dialog open={!!selectedComplaint} onOpenChange={(open) => !open && setSelectedComplaint(null)}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Detail Keluhan</DialogTitle>
-          </DialogHeader>
+        <DialogContent className="max-w-2xl sm:rounded-2xl p-0 overflow-hidden border-0 shadow-2xl">
+          <div className="bg-gradient-to-r from-slate-900 to-indigo-950 p-6 text-white">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold tracking-tight text-white">Detail Keluhan</DialogTitle>
+            </DialogHeader>
+          </div>
+          
           {selectedComplaint && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm border p-4 rounded-md bg-muted/20">
-                <div className="text-muted-foreground">Pelanggan</div>
-                <div className="font-medium">{selectedComplaint.namaPelanggan} ({selectedComplaint.kontakPelanggan || '-'})</div>
+            <div className="p-6 space-y-6 bg-card">
+              <div className="grid grid-cols-2 gap-x-6 gap-y-4 text-sm bg-muted/30 p-5 rounded-xl border border-border/50">
+                <div>
+                  <div className="text-muted-foreground font-semibold mb-1 uppercase tracking-wider text-xs">Pelanggan</div>
+                  <div className="font-bold text-base">{selectedComplaint.namaPelanggan}</div>
+                  <div className="text-muted-foreground">{selectedComplaint.kontakPelanggan || '-'}</div>
+                </div>
                 
-                <div className="text-muted-foreground">Kategori</div>
-                <div className="capitalize">{selectedComplaint.kategori}</div>
+                <div>
+                  <div className="text-muted-foreground font-semibold mb-1 uppercase tracking-wider text-xs">Tanggal Kejadian</div>
+                  <div className="font-bold text-base">{format(new Date(selectedComplaint.tanggal), 'dd MMMM yyyy')}</div>
+                </div>
                 
-                <div className="text-muted-foreground">Prioritas</div>
-                <div>{getPriorityBadge(selectedComplaint.prioritas)}</div>
-                
-                <div className="text-muted-foreground">Tanggal Kejadian</div>
-                <div>{format(new Date(selectedComplaint.tanggal), 'dd MMMM yyyy')}</div>
+                <div>
+                  <div className="text-muted-foreground font-semibold mb-2 uppercase tracking-wider text-xs">Kategori & Prioritas</div>
+                  <div className="flex gap-2">
+                    <span className="capitalize bg-secondary px-3 py-1 rounded-full text-xs font-semibold">{selectedComplaint.kategori}</span>
+                    {getPriorityBadge(selectedComplaint.prioritas)}
+                  </div>
+                </div>
               </div>
 
               <div>
-                <h4 className="font-semibold mb-1">{selectedComplaint.judul}</h4>
-                <p className="text-sm whitespace-pre-wrap">{selectedComplaint.deskripsi}</p>
+                <h4 className="font-extrabold text-xl mb-2 text-foreground">{selectedComplaint.judul}</h4>
+                <p className="text-base text-muted-foreground whitespace-pre-wrap leading-relaxed">{selectedComplaint.deskripsi}</p>
               </div>
 
-              <div className="border-t pt-4">
-                <h4 className="font-semibold mb-4">Update Penanganan</h4>
+              <div className="border-t border-border/50 pt-6">
+                <h4 className="font-bold text-lg mb-5 flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-primary" />
+                  Update Penanganan
+                </h4>
                 <Form {...updateForm}>
-                  <form onSubmit={updateForm.handleSubmit(onUpdate)} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
+                  <form onSubmit={updateForm.handleSubmit(onUpdate)} className="space-y-5">
+                    <div className="grid grid-cols-2 gap-5">
                       <FormField
                         control={updateForm.control}
                         name="status"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Update Status</FormLabel>
+                            <FormLabel className="font-semibold">Update Status</FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
-                                <SelectTrigger>
+                                <SelectTrigger className="bg-muted/30 h-11">
                                   <SelectValue />
                                 </SelectTrigger>
                               </FormControl>
@@ -509,9 +553,9 @@ export default function Keluhan() {
                         name="penangananOleh"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Ditangani Oleh</FormLabel>
+                            <FormLabel className="font-semibold">Ditangani Oleh</FormLabel>
                             <FormControl>
-                              <Input {...field} placeholder="Nama staf..." />
+                              <Input className="bg-muted/30 h-11" {...field} placeholder="Nama staf..." />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -523,19 +567,19 @@ export default function Keluhan() {
                       name="catatanPenanganan"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Catatan Penanganan</FormLabel>
+                          <FormLabel className="font-semibold">Catatan Penanganan</FormLabel>
                           <FormControl>
-                            <Textarea rows={3} {...field} placeholder="Tindakan yang telah dilakukan..." />
+                            <Textarea className="bg-muted/30 resize-none" rows={4} {...field} placeholder="Tindakan yang telah dilakukan..." />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    <div className="flex justify-end gap-2 pt-2">
-                      <Button type="button" variant="outline" onClick={() => setSelectedComplaint(null)}>
+                    <div className="flex justify-end gap-3 pt-4">
+                      <Button type="button" variant="outline" className="h-11 px-6 rounded-xl" onClick={() => setSelectedComplaint(null)}>
                         Tutup
                       </Button>
-                      <Button type="submit" disabled={updateComplaint.isPending}>
+                      <Button type="submit" className="btn-primary-gradient h-11 px-8 rounded-xl" disabled={updateComplaint.isPending}>
                         Simpan Update
                       </Button>
                     </div>
