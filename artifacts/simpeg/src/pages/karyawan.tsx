@@ -42,10 +42,10 @@ export default function Karyawan() {
     departemen: ""
   });
 
-  const filteredEmployees = employees?.filter(emp => 
+  const filteredEmployees = Array.isArray(employees) ? employees.filter(emp => 
     emp.nama.toLowerCase().includes(searchTerm.toLowerCase()) || 
     emp.nopek.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  ) : [];
 
   const openForm = (employee?: any) => {
     if (employee) {

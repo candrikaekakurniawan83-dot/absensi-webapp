@@ -24,7 +24,7 @@ export default function KaryawanDetail() {
     { query: { queryKey: getGetAttendanceRecordsQueryKey() } }
   );
 
-  const employeeAttendance = attendance?.filter(r => r.employeeId === id) || [];
+  const employeeAttendance = Array.isArray(attendance) ? attendance.filter(r => r.employeeId === id) : [];
   
   if (isLoadingEmp) {
     return <div className="p-8 text-center">Memuat data pegawai...</div>;

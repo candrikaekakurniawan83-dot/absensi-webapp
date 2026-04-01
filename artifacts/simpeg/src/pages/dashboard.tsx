@@ -28,7 +28,8 @@ export default function Dashboard() {
   ];
 
   const getRecordsByStatus = (status: AttendanceRecordStatus) => {
-    return records?.filter(r => r.status === status) || [];
+    if (!Array.isArray(records)) return [];
+    return records.filter(r => r.status === status);
   };
 
   return (

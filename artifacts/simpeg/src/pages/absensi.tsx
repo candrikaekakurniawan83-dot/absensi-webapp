@@ -44,8 +44,10 @@ export default function Absensi() {
     keterangan: ""
   });
 
-  const filteredRecords = records?.filter(r => filterStatus === "all" || r.status === filterStatus)
-    .sort((a, b) => new Date(b.tanggal).getTime() - new Date(a.tanggal).getTime());
+  const filteredRecords = Array.isArray(records)
+    ? records.filter(r => filterStatus === "all" || r.status === filterStatus)
+        .sort((a, b) => new Date(b.tanggal).getTime() - new Date(a.tanggal).getTime())
+    : [];
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
