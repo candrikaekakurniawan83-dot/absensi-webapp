@@ -5,10 +5,14 @@ import attendanceRouter from "./attendance";
 import documentsRouter from "./documents";
 import inventoryRouter from "./inventory";
 import complaintsRouter from "./complaints";
+import rolesRouter from "./roles";
+import usersRouter from "./users";
 
 const router: IRouter = Router();
 
 router.use(healthRouter);
+router.use(rolesRouter);
+router.use(usersRouter);
 router.use(employeesRouter);
 router.use(attendanceRouter);
 router.use(documentsRouter);

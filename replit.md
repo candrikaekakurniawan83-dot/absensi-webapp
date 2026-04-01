@@ -74,6 +74,32 @@ Database layer using Drizzle ORM with PostgreSQL. Exports a Drizzle client insta
 
 Production migrations are handled by Replit when publishing. In development, we just use `pnpm --filter @workspace/db run push`, and we fallback to `pnpm --filter @workspace/db run push-force`.
 
+#### Database Tables
+
+| Table | Description |
+|---|---|
+| `roles` | 4 roles: admin, pegawai, saler, pelanggan |
+| `permissions` | Resource+action pairs (e.g. employees:read, attendance:approve) |
+| `role_permissions` | Many-to-many join between roles and permissions |
+| `users` | Application users with role FK and optional employee FK |
+| `employees` | Employee master data |
+| `attendance` | Kehadiran/izin/cuti/dinas records |
+| `documents` | Surat-surat (SP3S, SIJ, CUTI, DINAS, etc.) |
+| `inventory_items` | Inventory master items |
+| `inventory_transactions` | Stock in/out transactions |
+| `complaints` | Customer complaints |
+
+#### Role Permissions
+
+| Role | Access |
+|---|---|
+| `admin` | Full access to all resources + approval of izin and documents |
+| `pegawai` | Read-only to their own attendance and document history |
+| `saler` | Read/write inventory + read/update complaints |
+| `pelanggan` | Read their own complaints (read_own) + create complaints |
+
+Seed script: `pnpm --filter @workspace/db run seed` — seeds default roles, permissions, role-permission mappings, and an admin user.
+
 ### `lib/api-spec` (`@workspace/api-spec`)
 
 Owns the OpenAPI 3.1 spec (`openapi.yaml`) and the Orval config (`orval.config.ts`). Running codegen produces output into two sibling packages:
